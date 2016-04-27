@@ -1,3 +1,5 @@
 #this is the ignore file list
 *.xls
 ~$.*
+*.csv
+*.xlsx
