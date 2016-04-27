@@ -1,4 +1,5 @@
 <?php
+
 require 'db.php';
 
 if (!empty($_POST['openId'])){
