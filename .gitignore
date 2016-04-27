@@ -5,3 +5,6 @@
 *.xlsx
 *.sql
 *.zip
+db.php
+import.php
+logging.php
