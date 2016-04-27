@@ -1,5 +1,5 @@
 <?php
-require 'mysql.php';
+require 'db.php';
 
 if (!empty($_POST['openId'])){
 	$data = array(
@@ -10,7 +10,7 @@ if (!empty($_POST['openId'])){
 		);
 	try {
 		//var_dump($data);
-		$affectedRecord = $mysql->insert('car',$data);
+		$affectedRecord = $db->insert('car',$data);
 		echo "贡献成功";
 	} catch (Exception $e) {
 		echo "贡献失败，请联系Evan,He<BR>\n\n";	

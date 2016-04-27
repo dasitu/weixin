@@ -1,7 +1,7 @@
 ﻿<?php
 
 //Database connection
-require 'mysql.php';
+require 'db.php';
 
 ini_set("display_errors", "On");
 error_reporting(E_ALL | E_STRICT);
@@ -10,7 +10,8 @@ define("TOKEN", "kaka");
 
 //get post data
 $postStr = file_get_contents("php://input");
-/*
+
+if(!empty($_GET['z']))
 $postStr = '<xml>
  <ToUserName><![CDATA[toUser]]></ToUserName>
  <FromUserName><![CDATA[fromUser]]></FromUserName> 
@@ -19,7 +20,7 @@ $postStr = '<xml>
  <Content><![CDATA[A7]]></Content>
  <MsgId>1234567890123456</MsgId>
  </xml>';
-*/
+
 //extract post data
 if (!empty($postStr)){
 	/* libxml_disable_entity_loader is to prevent XML eXternal Entity Injection,
@@ -48,7 +49,7 @@ if (!empty($postStr)){
 					</xml>";
 		if(!empty( $keyword )){
 			$msgType = "text";
-			$contentStr = getCarNumber($keyword,$mysql,$fromUsername);
+			$contentStr = getCarNumber($keyword,$fromUsername,$db);
 			//$contentStr = "Welcome ".$fromUsername." to wechat world!".$keyword;
 			$resultStr = sprintf($textTpl, $fromUsername, $toUsername, $time, $msgType, $contentStr);
 			echo $resultStr;
@@ -90,27 +91,20 @@ function checkSignature(){
 		}
 }
 
-function getCarNumber($searchedCar,$mysql,$fromUsername)	{
-		//setlocale(LC_ALL, "en_US.UTF-8");
-		//$file = 'carNumber.csv';
-		/*
-		if (($handle = fopen("$file", "r")) !== FALSE) {
-			while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-				if ($searchedCar == $data[0]){
-					$searchedPhone = $data[1];
-				}
-			}
-			fclose($handle);
-		}
-		*/
-		$searchedCar = preg_replace('/\s(?=)/', '', $searchedCar);
-		$sql = 'select * from car where carid like "%'.$searchedCar.'%"';
-		$cars = $mysql->doSql($sql);
+function getCarNumber($searchedCar,$userOpenId,$dbconn)	{
+
+		$searchedCar = preg_replace('/\s(?=)/', '', $searchedCar);		
+		$bind = array(
+			":search" => "%$searchedCar%"
+		);
+		$cars = $dbconn->select("car", "carid LIKE :search", $bind);
+		
 		//var_dump($cars);
 		//exit;
-		$results = "没找到车牌号是 $searchedCar 的记录。".'<a href="http://ebear.netai.net/weixin/reg.php?c='.$searchedCar.'&o='.$fromUsername.'">贡献车牌?</a>';
+		$results = "没找到车牌号是 $searchedCar 的记录。".'<a href="http://ebear.netai.net/weixin/reg.php?c='.$searchedCar.'&o='.$userOpenId.'">贡献车牌?</a>';
 		if(!empty($cars)){
 			$results = "";
+			$limit = 3;
 			for($i=0;$i<count($cars);$i++){
 				$results .= $cars[$i]["carid"]."\n";
 				
@@ -120,8 +114,8 @@ function getCarNumber($searchedCar,$mysql,$fromUsername)	{
 				
 				$results .=	$cars[$i]["mobile"]."\n";
 				
-				if($i==5){
-					$results .= "找到超过5个匹配的车牌，只显示了前5个，多输点儿字嘛！"; 
+				if($i==($limit-1)){
+					$results .= "找到超过 $limit 个匹配的车牌，只显示了前 $limit 个，多输点儿字嘛！"; 
 					break;
 				}
 			}
