@@ -2,6 +2,7 @@
 function logging($text,$level="ERROR",$logFile="car.log"){
 //Level definition: ERROR,DEBUG,INFOR
 
+	date_default_timezone_set('Asia/Shanghai');
 	$date = date(DateTime::W3C);
 	$fhandler = fopen($logFile,'a');
 	
@@ -70,10 +71,9 @@ function getCarNumber($searchedCar,$userOpenId,$dbconn)	{
 					break;
 				}
 			}
+			
 		}
-		else{
-			logging("没找到车牌号是 $searchedCar 的记录","INFOR");
-		}
+		logging("返回 ".str_replace(array("\r\n", "\r", "\n", "\t"), ' ', $results),"INFOR");
 		return trim($results,"\n");
 }
 ?>
