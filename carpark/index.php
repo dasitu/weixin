@@ -1,10 +1,7 @@
 ﻿<?php
-require_once "func.php";
-require_once "db.php";
+require_once "class.db.php";
+require_once "conf.php";
 
-ini_set("display_errors", "On");
-error_reporting(E_ALL | E_STRICT);
-define("TOKEN", "kaka");
 //valid();
 
 //get post data
@@ -16,7 +13,7 @@ $postStr = '<xml>
  <FromUserName><![CDATA[fromUser]]></FromUserName> 
  <CreateTime>1348831860</CreateTime>
  <MsgType><![CDATA[text]]></MsgType>
- <Content><![CDATA[A7]]></Content>
+ <Content><![CDATA[川A734WJ]]></Content>
  <MsgId>1234567890123456</MsgId>
  </xml>';
 

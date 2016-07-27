@@ -8,14 +8,14 @@ class db extends PDO {
 	private $errorCallbackFunction;
 	private $errorMsgFormat;
 
-	public function __construct($dsn, $user="", $passwd="") {
+	public function __construct($dsn, $user="", $passwd="", $driverOptions=array()) {
 		$options = array(
 			PDO::ATTR_PERSISTENT => true, 
-			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-			PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8';"
+			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
 		);
 
 		try {
+			$options = array_merge($options, $driverOptions);
 			parent::__construct($dsn, $user, $passwd, $options);
 		} catch (PDOException $e) {
 			$this->error = $e->getMessage();
@@ -115,13 +115,23 @@ class db extends PDO {
 
 		try {
 			$pdostmt = $this->prepare($this->sql);
-			if($pdostmt->execute($this->bind) !== false) {
+			echo $this->sql;
+			echo "\n<br>";
+			print_r($this->bind);
+			$boolResult = $pdostmt->execute($this->bind);
+
+			if($boolResult == true) {
 				if(preg_match("/^(" . implode("|", array("select", "describe", "pragma")) . ") /i", $this->sql))
 					return $pdostmt->fetchAll(PDO::FETCH_ASSOC);
 				elseif(preg_match("/^(" . implode("|", array("delete", "insert", "update")) . ") /i", $this->sql))
 					return $pdostmt->rowCount();
-			}	
+			}
 		} catch (PDOException $e) {
+			echo "\nPDOStatement::errorInfo():\n";
+			$arr = $pdostmt->errorInfo();
+			print_r($arr);
+			echo "\nPDOStatement::errorCode(): ";
+			print $pdostmt->errorCode();
 			$this->error = $e->getMessage();	
 			$this->debug();
 			return false;

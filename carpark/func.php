@@ -1,8 +1,10 @@
 <?php
-function logging($text,$level="ERROR",$logFile="car.log"){
+require_once "conf.php";
+
+function logging($text,$level=DEFAULT_LOG_LEVEL,$logFile=LOG_FILE){
 //Level definition: ERROR,DEBUG,INFOR
 
-	date_default_timezone_set('Asia/Shanghai');
+	date_default_timezone_set(DEFAULT_LOG_TIMEZONE);
 	$date = date(DateTime::W3C);
 	$fhandler = fopen($logFile,'a');
 	
@@ -53,7 +55,7 @@ function getCarNumber($searchedCar,$userOpenId,$dbconn)	{
 		
 		//var_dump($cars);
 		//exit;
-		$results = "没找到车牌号是 $searchedCar 的记录。".'<a href="http://ebear.netai.net/weixin/reg.php?c='.$searchedCar.'&o='.$userOpenId.'">贡献车牌?</a>';
+		$results = "没找到车牌号是 $searchedCar 的记录。".'<a href="reg.php?c='.$searchedCar.'&o='.$userOpenId.'">贡献车牌?</a>';
 		if(!empty($cars)){
 			$results = "";
 			$limit = 3;
