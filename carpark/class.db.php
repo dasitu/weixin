@@ -115,23 +115,17 @@ class db extends PDO {
 
 		try {
 			$pdostmt = $this->prepare($this->sql);
-			echo $this->sql;
-			echo "\n<br>";
-			print_r($this->bind);
-			$boolResult = $pdostmt->execute($this->bind);
-
-			if($boolResult == true) {
+			if($pdostmt->execute($this->bind) == true) {
 				if(preg_match("/^(" . implode("|", array("select", "describe", "pragma")) . ") /i", $this->sql))
 					return $pdostmt->fetchAll(PDO::FETCH_ASSOC);
 				elseif(preg_match("/^(" . implode("|", array("delete", "insert", "update")) . ") /i", $this->sql))
 					return $pdostmt->rowCount();
 			}
+			else{
+				$this->debug();
+				return false;
+			}
 		} catch (PDOException $e) {
-			echo "\nPDOStatement::errorInfo():\n";
-			$arr = $pdostmt->errorInfo();
-			print_r($arr);
-			echo "\nPDOStatement::errorCode(): ";
-			print $pdostmt->errorCode();
 			$this->error = $e->getMessage();	
 			$this->debug();
 			return false;

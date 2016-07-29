@@ -4,7 +4,7 @@ require_once "class.db.php";
 
 ini_set("display_errors", "On");
 error_reporting(E_ALL | E_STRICT);
-define("TOKEN", "kaka");
+define("TOKEN", "kakamimi");
 define("LOG_FILE", 'data/car.log');
 define("DEFAULT_LOG_LEVEL", "ERROR");
 define("DEFAULT_LOG_TIMEZONE", 'Asia/Shanghai');
@@ -23,7 +23,7 @@ try{
 
 	
 	//SQLite
-	$dsn = 'sqlite:data/car.sq3';
+	$dsn = 'sqlite:data/carpark.db3';
 	$db = new db($dsn);
 	
 	//Give the callback function to logging in order to log some SQL Errors.

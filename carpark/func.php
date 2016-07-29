@@ -55,7 +55,7 @@ function getCarNumber($searchedCar,$userOpenId,$dbconn)	{
 		
 		//var_dump($cars);
 		//exit;
-		$results = "没找到车牌号是 $searchedCar 的记录。".'<a href="reg.php?c='.$searchedCar.'&o='.$userOpenId.'">贡献车牌?</a>';
+		$results = "没找到车牌号是 $searchedCar 的记录。".'<a href="http://'.$_SERVER['SERVER_NAME'].'/carpark/reg.php?c='.$searchedCar.'&o='.$userOpenId.'">贡献车牌?</a>';
 		if(!empty($cars)){
 			$results = "";
 			$limit = 3;

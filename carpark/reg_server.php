@@ -11,7 +11,7 @@ if (!empty($_POST['openId'])){
 		//var_dump($data);
 		if($db->insert('car',$data)){
 			echo "贡献成功";
-			logging("贡献成功 ".$data['carid'],"INFOR");
+			logging("贡献成功 ".$data['carid'].' '.$data['mobile'].' by '.$data['contributor_openid'],"INFOR");
 		}
 		else
 		{

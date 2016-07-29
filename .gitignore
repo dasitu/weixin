@@ -5,6 +5,8 @@
 *.xlsx
 *.sql
 *.zip
-db.php
-import.php
+*.db3
 *.log
+*.exe
+wx_sample.php
+import.php

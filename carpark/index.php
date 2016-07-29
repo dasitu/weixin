@@ -2,8 +2,6 @@
 require_once "class.db.php";
 require_once "conf.php";
 
-//valid();
-
 //get post data
 $postStr = file_get_contents("php://input");
 
@@ -13,7 +11,7 @@ $postStr = '<xml>
  <FromUserName><![CDATA[fromUser]]></FromUserName> 
  <CreateTime>1348831860</CreateTime>
  <MsgType><![CDATA[text]]></MsgType>
- <Content><![CDATA[川A734WJ]]></Content>
+ <Content><![CDATA[川A22222]]></Content>
  <MsgId>1234567890123456</MsgId>
  </xml>';
 
